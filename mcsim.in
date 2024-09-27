@@ -1,0 +1,4 @@
+parameter_file = params_mcsim.in; restart_file =   ar4.xyz;
+
+temperature = 298.15;
+n_steps = 10;
