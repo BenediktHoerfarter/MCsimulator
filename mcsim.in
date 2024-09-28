@@ -1,4 +1,6 @@
-parameter_file = params_mcsim.in; restart_file =   ar4.xyz;
+parameter_file = params_mcsim.in; 
+restart_file = ar7.xyz;
 
-temperature = 298.15;
-n_steps = 10;
+n_steps = 10000;
+temp = 300;
+vdW_cutoff = 12.0;
