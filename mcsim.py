@@ -2,6 +2,7 @@ import sys
 import re
 import random
 import numpy as np
+import copy
 
 
 
@@ -57,6 +58,7 @@ except:
     print('|||||||||||||||||||| MC Simulator exited with ERROR ||||||||||||||||||||\nPlease define the number of MC steps in the input file!\n    Syntax: "n_steps = ..."')
     quit
 
+### reading in the temperature
 try:
     temp_position: int = input_string.find('temp')
     temp_position_start: int = input_string.find('=', temp_position)
@@ -72,7 +74,7 @@ try:
     vdW_cutoff_position_end: int = input_string.find(';', vdW_cutoff_position)
     vdW_cutoff: float = float(input_string[vdW_cutoff_position_start+1:vdW_cutoff_position_end].strip())
 except:
-    vdW_cutoff: float = 12.0
+    vdW_cutoff: float = np.infty
 
 
 
@@ -152,7 +154,7 @@ step_counter: int = 0
 
 ### random movement of one randomly chosen atom
 
-while step_counter <= n_steps: # this loop is broken - the lists are not correctly updated / discarded
+while step_counter < n_steps:
     
     step_counter += 1
 
@@ -160,11 +162,11 @@ while step_counter <= n_steps: # this loop is broken - the lists are not correct
     randomly_chosen_atom_index: int = atoms_with_coordinates_list.index(randomly_chosen_atom)
 
     trial_atoms_with_coordinates_list: list = []
-    trial_atoms_with_coordinates_list[:] = atoms_with_coordinates_list[:]
+    trial_atoms_with_coordinates_list = copy.deepcopy(atoms_with_coordinates_list)
 
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = atoms_with_coordinates_list[randomly_chosen_atom_index][1] + random.uniform(-1, 1)
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] = atoms_with_coordinates_list[randomly_chosen_atom_index][2] + random.uniform(-1, 1)
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] = atoms_with_coordinates_list[randomly_chosen_atom_index][3] + random.uniform(-1, 1)
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] + random.uniform(-0.2, 0.2)
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] = trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] + random.uniform(-0.2, 0.2)
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] = trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] + random.uniform(-0.2, 0.2)
 
     next_step_structure_string: str = str(number_of_atoms) + '\n' + ' Total Energy: not yet known' + '\n' + print_trial_atoms_with_coordinates_for_xyz_file()
     readwritefile = open('read-write-file.rwf', 'w')
@@ -172,21 +174,21 @@ while step_counter <= n_steps: # this loop is broken - the lists are not correct
     readwritefile.close()
     readwritefile = open('read-write-file.rwf', 'r')
 
-    next_step_atoms_with_coordinates_list: list = []
+    trial_atoms_with_coordinates_list: list = []
     number_of_atoms: int = 0
     for line in readwritefile:
         if re.match(r'^[A-Z]', line):
             line = line.strip()
-            next_step_atoms_with_coordinates_list.append(line.split())
+            trial_atoms_with_coordinates_list.append(line.split())
             number_of_atoms += 1
-    for atom in next_step_atoms_with_coordinates_list:
+    for atom in trial_atoms_with_coordinates_list:
         atom[1] = float(atom[1])
         atom[2] = float(atom[2])
         atom[3] = float(atom[3])
 
     E_pot_total: float = 0.0
 
-    for atomA in next_step_atoms_with_coordinates_list:
+    for atomA in trial_atoms_with_coordinates_list:
         atomA_x: float = atomA[1]
         atomA_y: float = atomA[2]
         atomA_z: float = atomA[3]
@@ -195,7 +197,7 @@ while step_counter <= n_steps: # this loop is broken - the lists are not correct
         A_LJ_position_start: int = parameter_string.find('=', A_LJ_position)
         A_LJ_position_end: int = parameter_string.find(';', A_LJ_position)
         A_lj: float = float(parameter_string[A_LJ_position_start+1:A_LJ_position_end].strip())
-        for atomB in next_step_atoms_with_coordinates_list:
+        for atomB in trial_atoms_with_coordinates_list:
             if atomB == atomA:
                 continue
             else:
@@ -219,11 +221,12 @@ while step_counter <= n_steps: # this loop is broken - the lists are not correct
         trajectoryfile = open('mcsim-traj.xyz', 'a')
         trajectoryfile.write(structure_string)
         trajectoryfile.close()
+        atoms_with_coordinates_list: list = []
         atoms_with_coordinates_list[:] = trial_atoms_with_coordinates_list[:]
     else:
         E_list = E_list[:-1]
 
 
-    print(atoms_with_coordinates_list)
+
 print('''  MC Simulator terminated NORMALLY. bho.           
       ''')
