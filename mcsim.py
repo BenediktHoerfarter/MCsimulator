@@ -211,7 +211,7 @@ while step_counter <= n_steps:
     E_list.append(E_pot_total)
 
     if np.exp(-(E_list[step_counter] - E_list[step_counter-1])*4184/(8.31446261815324*temp)) >= random.uniform(0, 1):
-        structure_string: str = str(number_of_atoms) + '\n' + ' Step: ' + str(step_counter) + '. Total Energy: ' + str(E_pot_total) + ' kcal/mol.' + '\n' + print_atoms_with_coordinates_for_xyz_file()
+        structure_string: str = str(number_of_atoms) + '\n' + ' Step: ' + str(step_counter) + '. Total Energy: ' + str(E_pot_total) + ' kcal/mol.' + '\n' + print_trial_atoms_with_coordinates_for_xyz_file()
         trajectoryfile = open('mcsim-traj.xyz', 'a')
         trajectoryfile.write(structure_string)
         trajectoryfile.close()
@@ -220,4 +220,5 @@ while step_counter <= n_steps:
         E_list[-1] = E_list[-2]
         continue
 
-print(E_list)
+print('''  MC Simulator terminated NORMALLY. bho.           
+      ''')

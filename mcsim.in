@@ -1,6 +1,6 @@
 parameter_file = params_mcsim.in; 
 restart_file = ar7.xyz;
 
-n_steps = 10000;
-temp = 300;
-vdW_cutoff = 12.0;
+n_steps = 1000;
+temp = 200;
+vdW_cutoff = 20.0;
