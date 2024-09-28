@@ -131,6 +131,7 @@ def print_atoms_with_coordinates_for_xyz_file() -> str:
     for i in range(number_of_atoms):
         string_of_atoms_with_coordinates_for_xyz = string_of_atoms_with_coordinates_for_xyz + atoms_with_coordinates_list[int(f'{i}')][0] + ' ' + str(atoms_with_coordinates_list[int(f'{i}')][1]) + ' ' + str(atoms_with_coordinates_list[int(f'{i}')][2]) + ' ' + str(atoms_with_coordinates_list[int(f'{i}')][3]) + '\n'
     return string_of_atoms_with_coordinates_for_xyz
+
 def print_trial_atoms_with_coordinates_for_xyz_file() -> str:
     string_of_atoms_with_coordinates_for_xyz: str = ''
     for i in range(number_of_atoms):
@@ -139,7 +140,7 @@ def print_trial_atoms_with_coordinates_for_xyz_file() -> str:
 
 structure_string: str = str(number_of_atoms) + '\n' + ' Step: 0. Total Energy: ' + str(E_pot_total) + ' kcal/mol.' + '\n' + print_atoms_with_coordinates_for_xyz_file()
 
-trajectoryfile = open('mcsim-traj.xyz', 'a')
+trajectoryfile = open('mcsim-traj.xyz', 'w')
 trajectoryfile.write(structure_string)
 trajectoryfile.close()
 
@@ -157,10 +158,13 @@ while step_counter <= n_steps:
     randomly_chosen_atom: list = random.choice(atoms_with_coordinates_list)
     randomly_chosen_atom_index: int = atoms_with_coordinates_list.index(randomly_chosen_atom)
 
-    trial_atoms_with_coordinates_list: list = atoms_with_coordinates_list[:]
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = atoms_with_coordinates_list[randomly_chosen_atom_index][1] + random.uniform(-0.5, 0.5)
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] = atoms_with_coordinates_list[randomly_chosen_atom_index][2] + random.uniform(-0.5, 0.5)
-    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] = atoms_with_coordinates_list[randomly_chosen_atom_index][3] + random.uniform(-0.5, 0.5)
+    trial_atoms_with_coordinates_list: list = []
+    
+    trial_atoms_with_coordinates_list[:] = atoms_with_coordinates_list[:]
+
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = atoms_with_coordinates_list[randomly_chosen_atom_index][1] + random.uniform(-1, 1)
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] = atoms_with_coordinates_list[randomly_chosen_atom_index][2] + random.uniform(-1, 1)
+    trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] = atoms_with_coordinates_list[randomly_chosen_atom_index][3] + random.uniform(-1, 1)
 
     next_step_structure_string: str = str(number_of_atoms) + '\n' + ' Total Energy: not yet known' + '\n' + print_trial_atoms_with_coordinates_for_xyz_file()
     readwritefile = open('read-write-file.rwf', 'w')
@@ -210,14 +214,14 @@ while step_counter <= n_steps:
 
     E_list.append(E_pot_total)
 
-    if np.exp(-(E_list[step_counter] - E_list[step_counter-1])*4184/(8.31446261815324*temp)) >= random.uniform(0, 1):
+    if np.exp(-(E_list[-1] - E_list[-2])*4184/(8.31446261815324*temp)) >= random.uniform(0, 1):
         structure_string: str = str(number_of_atoms) + '\n' + ' Step: ' + str(step_counter) + '. Total Energy: ' + str(E_pot_total) + ' kcal/mol.' + '\n' + print_trial_atoms_with_coordinates_for_xyz_file()
         trajectoryfile = open('mcsim-traj.xyz', 'a')
         trajectoryfile.write(structure_string)
         trajectoryfile.close()
         atoms_with_coordinates_list[:] = trial_atoms_with_coordinates_list[:]
     else:
-        E_list[-1] = E_list[-2]
+        E_list.pop()
         continue
 
 print('''  MC Simulator terminated NORMALLY. bho.           
