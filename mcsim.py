@@ -145,13 +145,14 @@ trajectoryfile.write(structure_string)
 trajectoryfile.close()
 
 
+
 ##################################### MAKING MC STEPS - while loop #####################################
 
 step_counter: int = 0
 
 ### random movement of one randomly chosen atom
 
-while step_counter <= n_steps:
+while step_counter <= n_steps: # this loop is broken - the lists are not correctly updated / discarded
     
     step_counter += 1
 
@@ -159,7 +160,6 @@ while step_counter <= n_steps:
     randomly_chosen_atom_index: int = atoms_with_coordinates_list.index(randomly_chosen_atom)
 
     trial_atoms_with_coordinates_list: list = []
-    
     trial_atoms_with_coordinates_list[:] = atoms_with_coordinates_list[:]
 
     trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = atoms_with_coordinates_list[randomly_chosen_atom_index][1] + random.uniform(-1, 1)
@@ -221,8 +221,9 @@ while step_counter <= n_steps:
         trajectoryfile.close()
         atoms_with_coordinates_list[:] = trial_atoms_with_coordinates_list[:]
     else:
-        E_list.pop()
-        continue
+        E_list = E_list[:-1]
 
+
+    print(atoms_with_coordinates_list)
 print('''  MC Simulator terminated NORMALLY. bho.           
       ''')

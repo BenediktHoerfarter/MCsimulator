@@ -2,5 +2,5 @@ parameter_file = params_mcsim.in;
 restart_file = ar4_tetraeder.xyz;
 
 n_steps = 10000;
-temp = 200;
+temp = 300;
 vdW_cutoff = 12;
