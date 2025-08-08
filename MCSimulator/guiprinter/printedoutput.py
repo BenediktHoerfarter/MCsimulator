@@ -1,5 +1,6 @@
 def logo() -> str:
-    print( '''
+    print(
+        """
         MC Simulator      
 
     M       M   CCCCCCC
@@ -10,16 +11,23 @@ def logo() -> str:
     M       M  C     
     M       M   CCCCCCC
                 
-        ''')
+        """
+    )
+
 
 def performing_MCrun() -> str:
-    print( '''
+    print(
+        """
         
     >>>> Performing MONTE CARLO run... <<<<     
         
-        ''')
+        """
+    )
+
 
 def normal_termination() -> str:
-    print( '''  
+    print(
+        """  
         MC Simulator terminated NORMALLY. bho.
-        ''')
+        """
+    )
