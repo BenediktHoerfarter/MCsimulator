@@ -1,6 +1,6 @@
-# MCSimulator
+# MCsimulator
 
-MCSimulator is a Monte Carlo (MC) simulation tool designed to model van der Waals systems containing Ar and/or Xe. This repository provides an MC framework for running simulations and thereby obtaining trajectories.
+MCsimulator is a Monte Carlo (MC) simulation tool designed to model van der Waals systems containing Ar and/or Xe. This repository provides an MC framework for running simulations and thereby obtaining trajectories.
 
 ## Usage
 
@@ -13,11 +13,17 @@ MCSimulator is a Monte Carlo (MC) simulation tool designed to model van der Waal
 
 2. Run the MC simulation:
     ```bash
-    python MCSimulator mcsim.in
+    python -m MCsimulator mcsim.in
     ```
 
-3. View the results, e.g., using VMD (Visual Molecular Dynamics).
+3. Examine the obtained trajectory visually, e.g., using VMD or PyMOL.
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## To-Do
+
+- Naming conventions (e.g., camel case vs. underscores)
+- Refactoring functions
+- Building interface with open-source GNN potentials for calculating energy/forces as alternative to LJ potential
