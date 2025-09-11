@@ -2,6 +2,8 @@
 
 MCsimulator is a Monte Carlo (MC) simulation tool designed to model van der Waals systems containing Ar and/or Xe. This repository provides an MC framework for running simulations and thereby obtaining trajectories.
 
+**This is a proof-of-concept repo and therefore neither highly optimized nor, by no means, intended for professional/scientific application!**
+
 ## Usage
 
 1. Define your simulation parameters in the `mcsim.in`:

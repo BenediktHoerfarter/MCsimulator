@@ -1,5 +1,8 @@
 ### Manual exclusions
 
+ar4_tetraeder.xyz
+mcsim.in
+params_mcsim.in
 read-write-file.rwf
 mcsim-traj.xyz
 MCsimulator/__pycache__/*
