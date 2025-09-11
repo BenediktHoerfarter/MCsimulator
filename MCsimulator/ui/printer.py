@@ -1,7 +1,7 @@
 def logo() -> str:
     print(
         """
-        MC Simulator      
+        MCsimulator      
 
     M       M   CCCCCCC
     MM     MM  C     
@@ -28,6 +28,6 @@ def performing_MCrun() -> str:
 def normal_termination() -> str:
     print(
         """  
-        MC Simulator terminated NORMALLY. bho.
+        MCsimulator terminated NORMALLY. bho.
         """
     )

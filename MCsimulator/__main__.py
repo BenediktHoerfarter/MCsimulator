@@ -1,8 +1,8 @@
 ### This file sets up the main function
 
-from guiprinter.printedoutput import logo, performing_MCrun, normal_termination
-from inputreader.inputextractor import InputExtractor
-from mcpropagation.runningMCloop import running_mc_loop
+from .ui.printer import logo, performing_MCrun, normal_termination
+from .input.reader import InputExtractor
+from .engine.engine import running_mc_loop
 
 
 def main():

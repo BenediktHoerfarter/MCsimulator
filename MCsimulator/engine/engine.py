@@ -2,14 +2,13 @@ import numpy as np
 import random
 import copy
 import re
-from .settingupMC import (
+
+from ..setup.setup import (
     energy_calculator_and_list_append,
     gen_string_of_atoms_with_coordinates_for_xyz,
     lennard_jones_energy,
 )
-
-IDEAL_GAS_CONST = 8.31446261815324
-KCAL_TO_J_CONVERSION = 4184
+from ..constants.constants import *
 
 
 def running_mc_loop(InputExtractorObject):
@@ -126,7 +125,7 @@ def running_mc_loop(InputExtractorObject):
         E_list.append(E_pot_total)
 
         if np.exp(
-            -(E_list[-1] - E_list[-2]) * KCAL_TO_J_CONVERSION / (IDEAL_GAS_CONST * temp)
+            -(E_list[-1] - E_list[-2]) * KCAL_TO_J / (IDEAL_GAS_CONST * temp)
         ) >= random.uniform(0, 1):
             structure_string: str = (
                 str(number_of_atoms)

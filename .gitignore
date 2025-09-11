@@ -1,9 +1,12 @@
 ### Manual exclusions
 
+ar4_tetraeder.xyz
+mcsim.in
+params_mcsim.in
 read-write-file.rwf
 mcsim-traj.xyz
-MCSimulator/__pycache__/*
-MCSimulator/*/__pycache__/*
+MCsimulator/__pycache__/*
+MCsimulator/*/__pycache__/*
 
 
 # Byte-compiled / optimized / DLL files
