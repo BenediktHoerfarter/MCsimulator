@@ -19,6 +19,8 @@ class InputExtractor:
         self.parameter_string: str = None
         self.n_steps: int = None
         self.temp: float = None
+        self.vdW_cutoff: float = None
+        self.randomseed: int = None
 
     def extract_restartfile_fhand(self):
         restartfile_position: int = self.inputfile_string.find("restart_file")
@@ -122,3 +124,22 @@ class InputExtractor:
             print(
                 "||| Warning ||| --- No input van der Waals cutoff specified, using default value (no cutoff)."
             )
+
+    def extract_randomseed(self):
+        try:
+            randomseed_position: int = self.inputfile_string.find("seed")
+            randomseed_position_start: int = self.inputfile_string.find(
+                "=", randomseed_position
+            )
+            randomseed_position_end: int = self.inputfile_string.find(
+                ";", randomseed_position
+            )
+            randomseed: int = int(
+                self.inputfile_string[
+                    randomseed_position_start + 1 : randomseed_position_end
+                ].strip()
+            )
+            print("    Using random seed:", randomseed)
+            self.randomseed = randomseed
+        except:
+            return None

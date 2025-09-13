@@ -35,18 +35,9 @@ def running_mc_loop(InputExtractorObject):
         trial_atoms_with_coordinates_list: list = []
         trial_atoms_with_coordinates_list = copy.deepcopy(atoms_with_coordinates_list)
 
-        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] = (
-            trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1]
-            + random.uniform(-0.2, 0.2)
-        )
-        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] = (
-            trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2]
-            + random.uniform(-0.2, 0.2)
-        )
-        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] = (
-            trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3]
-            + random.uniform(-0.2, 0.2)
-        )
+        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][1] += random.uniform(-0.2, 0.2)
+        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][2] += random.uniform(-0.2, 0.2)
+        trial_atoms_with_coordinates_list[randomly_chosen_atom_index][3] += random.uniform(-0.2, 0.2)
 
         next_step_structure_string: str = (
             str(number_of_atoms)

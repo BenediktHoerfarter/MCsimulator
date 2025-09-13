@@ -1,0 +1,6 @@
+parameter_file = params_mcsim.in; 
+restart_file = ar4_tetraeder.xyz;
+
+n_steps = 2000;
+temp = 298.15;
+seed = 42;
