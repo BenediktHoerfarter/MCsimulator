@@ -2,25 +2,25 @@
 import random
 from .ui.printer import printLogo, printPerformingMCRun, printNormalTermination
 from .input.reader import InputExtractor
-from .engine.engine import running_mc_loop
+from .engine.engine import runningMCLoop
 
 
 def main():
 
     printLogo()
     inputdata = InputExtractor()
-    inputdata.restartfile_fhand_reader()
-    inputdata.extract_restartfile_atoms_with_coordinates_list()
-    inputdata.parameter_string_reader()
-    inputdata.n_steps_reader()
-    inputdata.temp_reader()
-    inputdata.vdW_cutoff_reader()
-    inputdata.randomseed_reader()
-    inputdata.outputname_reader()
+    inputdata.restartfileReader()
+    inputdata.extractRestartfileAtomsWithCoordinatesList()
+    inputdata.parameterStringReader()
+    inputdata.nStepsReader()
+    inputdata.tempReader()
+    inputdata.vdWCutoffReader()
+    inputdata.randomseedReader()
+    inputdata.outputnameReader()
     if inputdata.randomseed != None:
         random.seed(inputdata.randomseed)
     printPerformingMCRun()
-    running_mc_loop(inputdata)
+    runningMCLoop(inputdata)
     printNormalTermination()
 
 
