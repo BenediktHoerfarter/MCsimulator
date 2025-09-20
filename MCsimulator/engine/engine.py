@@ -3,11 +3,12 @@ import random
 import copy
 import re
 
+from ..input.reader import InputExtractor
 from ..utils.utils import ljEnergyCalculator, genStringAtomsWithCoordinatesForXYZ
 from ..constants.constants import *
 
 
-def runningMCLoop(InputExtractorObject) -> None:
+def runningMCLoop(InputExtractorObject: InputExtractor) -> None:
 
     nSteps = InputExtractorObject.nSteps
     atomsWithCoordinatesList = InputExtractorObject.atomsWithCoordinatesList
