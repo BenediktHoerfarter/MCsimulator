@@ -1,4 +1,4 @@
-def logo() -> None:
+def printLogo() -> None:
     print(
         """
         MCsimulator      
@@ -15,7 +15,7 @@ def logo() -> None:
     )
 
 
-def performing_MCrun() -> None:
+def printPerformingMCRun() -> None:
     print(
         """
         
@@ -25,7 +25,7 @@ def performing_MCrun() -> None:
     )
 
 
-def normal_termination() -> None:
+def printNormalTermination() -> None:
     print(
         """  
         MCsimulator terminated NORMALLY. bho.

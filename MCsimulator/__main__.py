@@ -1,13 +1,13 @@
 ### This file sets up the main function
 import random
-from .ui.printer import logo, performing_MCrun, normal_termination
+from .ui.printer import printLogo, printPerformingMCRun, printNormalTermination
 from .input.reader import InputExtractor
 from .engine.engine import running_mc_loop
 
 
 def main():
 
-    logo()
+    printLogo()
     inputdata = InputExtractor()
     inputdata.restartfile_fhand_reader()
     inputdata.extract_restartfile_atoms_with_coordinates_list()
@@ -19,9 +19,9 @@ def main():
     inputdata.outputname_reader()
     if inputdata.randomseed != None:
         random.seed(inputdata.randomseed)
-    performing_MCrun()
+    printPerformingMCRun()
     running_mc_loop(inputdata)
-    normal_termination()
+    printNormalTermination()
 
 
 if __name__ == "__main__":
