@@ -132,7 +132,12 @@ def running_mc_loop(InputExtractorObject) -> None:
                     trial_atoms_with_coordinates_list
                 )
             )
-            trajectoryfile = open(outputname, "a")
+            
+            if step_counter == 1:
+                trajectoryfile = open(outputname, "w")
+            else:
+                trajectoryfile = open(outputname, "a")
+
             trajectoryfile.write(structure_string)
             trajectoryfile.close()
             atoms_with_coordinates_list: list = []
