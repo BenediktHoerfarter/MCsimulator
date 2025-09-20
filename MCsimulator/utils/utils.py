@@ -2,12 +2,9 @@ def ljEnergy(Alj, Blj, distance) -> float:
     return (1 / distance**6) * ((Alj / distance**6) + Blj)
 
 
-def energyCalculatorListAppend(InputExtractorObject) -> list:
-    atomsWithCoordinatesList = InputExtractorObject.atomsWithCoordinatesList
-    parameterString = InputExtractorObject.parameterString
-    vdWCutoff = InputExtractorObject.vdWCutoff
+def ljEnergyCalculator(atomsWithCoordinatesList, parameterString, vdWCutoff) -> float:
     EpotTotal: float = 0.0
-    Elist: list = []
+
     for atomA in atomsWithCoordinatesList:
         atomAx: float = atomA[1]
         atomAy: float = atomA[2]
@@ -39,8 +36,7 @@ def energyCalculatorListAppend(InputExtractorObject) -> list:
                     )
                     distance: float = squareDistance ** (1 / 2)
                     EpotTotal: float = EpotTotal + ljEnergy(Alj, Blj, distance)
-    Elist.append(EpotTotal)
-    return Elist
+    return EpotTotal
 
 
 def genStringAtomsWithCoordinatesForXYZ(inputListAtomsWithCoordinates) -> str:

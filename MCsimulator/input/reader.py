@@ -1,11 +1,30 @@
 import sys
 import numpy as np
 import re
+import _io
+
+# Idea, To-Do:
+# For different types of calculations (LJ-based MC, NNP-based MC, etc.):
+# Create a superclass InputExtractor
+# Create subclasses for each type of calculation (LJInputExtractor, NNPInputExtractor, etc.) that inherit the general methods from InputExtractor
+
+
+def getStringFromEqualsignToSemicolon(inputstring: str, query: str) -> str | None:
+    searchStringPos: int = inputstring.find(query)
+    if searchStringPos != -1:
+        searchStringPosStart: int = inputstring.find("=", searchStringPos)
+        searchStringPosEnd: int = inputstring.find(";", searchStringPos)
+        extractedString: str = inputstring[
+            searchStringPosStart + 1 : searchStringPosEnd
+        ].strip()
+        return extractedString
+    else:
+        return None
 
 
 class InputExtractor:
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.inputfileName: str = sys.argv[1]
         print("Reading in the input file:", self.inputfileName)
@@ -13,120 +32,123 @@ class InputExtractor:
         inputfileString: str = open(self.inputfileName, "r").read()
         self.inputfileString = inputfileString
 
-        self.restartfileFhand = None
-        self.atomsWithCoordinatesList: list = None
-        self.nAtoms: int = None
-        self.parameterString: str = None
-        self.nSteps: int = None
-        self.temp: float = None
-        self.vdWCutoff: float = None
-        self.randomseed: int = None
-        self.outputname: str = None
+        self.restartfileFhand = self.restartfileReader()
+        self.atomsWithCoordinatesList: list = (
+            self.extractRestartfileAtomsWithCoordinatesList()
+        )
+        self.nAtoms: int = self.extractNumAtoms()
+        self.parameterString: str = self.parameterStringReader()
+        self.outputname: str = self.outputnameReader()
+        self.nSteps: int = self.nStepsReader()
+        self.temp: float = self.tempReader()
+        self.vdWCutoff: float = self.vdWCutoffReader()
+        self.randomseed: int = self.randomseedReader()
 
-    def restartfileReader(self) -> None:
-        restartfilePos: int = self.inputfileString.find("restart_file =")
-        restartfilePosStart: int = self.inputfileString.find("=", restartfilePos)
-        restartfilePosEnd: int = self.inputfileString.find(";", restartfilePos)
-        restartfile: str = self.inputfileString[
-            restartfilePosStart + 1 : restartfilePosEnd
-        ].strip()
-        restartfileFhand = open(restartfile, "r")
-        print("    Using restart file:", restartfile)
-        self.restartfileFhand = restartfileFhand
+    def restartfileReader(self) -> _io.TextIOWrapper | None:
+        restartfile = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "restart_file ="
+        )
+        try:
+            restartfileFhand = open(restartfile, "r")
+            print("    Using restart file:", restartfile)
+            return restartfileFhand
+        except:
+            print(
+                '|||||||||||||||||||| MC Simulator exited with ERROR ||||||||||||||||||||\nThe specified restart file could not be found!\nPlease check the filename and its path.\n    Syntax: "restart_file = ...;"'
+            )
+            exit()
 
-    def extractRestartfileAtomsWithCoordinatesList(self) -> None:
+    def extractRestartfileAtomsWithCoordinatesList(self) -> list:
         atomsWithCoordinatesList: list = []
+        lineCounter: int = 0
         for line in self.restartfileFhand:
-            if re.match(r"^[A-Z]", line):
+            lineCounter += 1
+            if re.match(r"^[A-Z]", line) and lineCounter > 2:
                 line = line.strip()
                 atomsWithCoordinatesList.append(line.split())
         for atom in atomsWithCoordinatesList:
             atom[1] = float(atom[1])
             atom[2] = float(atom[2])
             atom[3] = float(atom[3])
-        self.atomsWithCoordinatesList = atomsWithCoordinatesList
+        return atomsWithCoordinatesList
 
-    def parameterStringReader(self) -> None:
-        parameterfilePos: int = self.inputfileString.find("parameter_file =")
-        parameterfilePosStart: int = self.inputfileString.find("=", parameterfilePos)
-        parameterfilePosEnd: int = self.inputfileString.find(";", parameterfilePos)
-        parameterfile: str = self.inputfileString[
-            parameterfilePosStart + 1 : parameterfilePosEnd
-        ].strip()
-        parameterString: str = open(parameterfile, "r").read()
-        print("    Using parameter file:", parameterfile)
-        self.parameterString = parameterString
+    def extractNumAtoms(self) -> int:
+        numAtoms: int = len(self.atomsWithCoordinatesList)
+        return numAtoms
 
-    def outputnameReader(self) -> None:
-        outputnamePos: int = self.inputfileString.find("output_file =")
-        if outputnamePos != -1:
-            outputnamePosStart: int = self.inputfileString.find("=", outputnamePos)
-            outputnamePosEnd: int = self.inputfileString.find(";", outputnamePos)
-            outputname: str = self.inputfileString[
-                outputnamePosStart + 1 : outputnamePosEnd
-            ].strip()
-            self.outputname = outputname
-            print("    Writing to output file:", outputname)
-        else:
-            self.outputname = "mcsim-traj.xyz"
-            print("    Writing to output file: mcsim-traj.xyz")
-
-    def nStepsReader(self) -> None:
-        nStepsPos: int = self.inputfileString.find("n_steps =")
-        if nStepsPos != -1:
-            nStepsPosStart: int = self.inputfileString.find("=", nStepsPos)
-            nStepsPosEnd: int = self.inputfileString.find(";", nStepsPos)
-            nSteps: int = int(
-                self.inputfileString[nStepsPosStart + 1 : nStepsPosEnd].strip()
+    def parameterStringReader(self) -> str:
+        parameterfile = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "parameter_file ="
+        )
+        try:
+            parameterString: str = open(parameterfile, "r").read()
+            print("    Using parameter file:", parameterfile)
+            return parameterString
+        except:
+            print(
+                '|||||||||||||||||||| MC Simulator exited with ERROR ||||||||||||||||||||\nThe specified parameter file could not be found!\nPlease check the filename and its path.\n    Syntax: "parameter_file = ...;"'
             )
-            self.nSteps = nSteps
+            exit()
+
+    def outputnameReader(self) -> str:
+        outputname = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "output_file ="
+        )        
+        if outputname != None:
+            print("    Writing to output file:", outputname)
+            return outputname
         else:
+            print("    Writing to output file: mcsim-traj.xyz")
+            return "mcsim-traj.xyz"
+
+    def nStepsReader(self) -> int:
+        nSteps = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "n_steps ="
+        )
+        try:
+            nSteps = int(nSteps)
+            return nSteps
+        except:
             print(
                 '|||||||||||||||||||| MC Simulator exited with ERROR ||||||||||||||||||||\nPlease define the number of MC steps in the input file!\n    Syntax: "n_steps = ...;"'
             )
             exit()
 
-    def tempReader(self) -> None:
-        tempPos: int = self.inputfileString.find("temp =")
-        if tempPos != -1:
-            tempPosStart: int = self.inputfileString.find("=", tempPos)
-            tempPosEnd: int = self.inputfileString.find(";", tempPos)
-            temp: float = float(
-                self.inputfileString[tempPosStart + 1 : tempPosEnd].strip()
-            )
-            self.temp = temp
-        else:
+    def tempReader(self) -> float:
+        temp = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "temp ="
+        )
+        try:
+            temp = float(temp)
+            return temp
+        except:
             temp: float = 298.15
-            self.temp = temp
             print(
                 "||| Warning ||| --- No input temperature specified, using default value (298.15 K)."
             )
+            return temp
 
-    def vdWCutoffReader(self) -> None:
-        vdWCutoffPos: int = self.inputfileString.find("vdWCutoff =")
-        if vdWCutoffPos != -1:
-            vdWCutoffPosStart: int = self.inputfileString.find("=", vdWCutoffPos)
-            vdWCutoffPosEnd: int = self.inputfileString.find(";", vdWCutoffPos)
-            vdWCutoff: float = float(
-                self.inputfileString[vdWCutoffPosStart + 1 : vdWCutoffPosEnd].strip()
-            )
-            self.vdWCutoff = vdWCutoff
-        else:
+    def vdWCutoffReader(self) -> float:
+        vdWCutoff = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "vdW_cutoff ="
+        )
+        try:
+            vdWCutoff = float(vdWCutoff)
+            return vdWCutoff
+        except:
             vdWCutoff: float = np.infty
-            self.vdWCutoff = vdWCutoff
             print(
                 "||| Warning ||| --- No input van der Waals cutoff specified, using default value (no cutoff)."
             )
+            return vdWCutoff
 
-    def randomseedReader(self) -> None:
-        randomseedPos: int = self.inputfileString.find("seed =")
-        if randomseedPos != -1:
-            randomseedPosStart: int = self.inputfileString.find("=", randomseedPos)
-            randomseedPosEnd: int = self.inputfileString.find(";", randomseedPos)
-            randomseed: int = int(
-                self.inputfileString[randomseedPosStart + 1 : randomseedPosEnd].strip()
-            )
+    def randomseedReader(self) -> int | None:
+        randomseed = getStringFromEqualsignToSemicolon(
+            self.inputfileString, "seed ="
+        )
+        try:
+            randomseed = int(randomseed)
             print("    Using random seed:", randomseed)
-            self.randomseed = randomseed
-        else:
+            return randomseed        
+        except:
             return None
