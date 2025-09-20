@@ -31,7 +31,9 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## To-Do
 
-- Refactoring functions
-- Safety features for user input
-- Naming conventions (e.g., camel case vs. underscores)
+- Refactoring functions, especially for feeding LJ energy into MC loop
+    - class potentialEnergyCalculator with multiple methods?
 - Building interface with open-source GNN potentials for calculating energy as alternative to LJ potential
+- Safety features for user input (system exits)
+- Improvement of reading only the atom lines within .xyz (i.e., skip two rows)
+- Implement unit and integration tests

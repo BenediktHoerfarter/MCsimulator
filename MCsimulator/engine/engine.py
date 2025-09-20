@@ -36,15 +36,9 @@ def runningMCLoop(InputExtractorObject) -> None:
         trialAtomsWithCoordinatesList: list = []
         trialAtomsWithCoordinatesList = copy.deepcopy(atomsWithCoordinatesList)
 
-        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][1] += random.uniform(
-            -0.2, 0.2
-        )
-        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][2] += random.uniform(
-            -0.2, 0.2
-        )
-        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][3] += random.uniform(
-            -0.2, 0.2
-        )
+        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][1] += random.uniform(-0.2, 0.2)
+        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][2] += random.uniform(-0.2, 0.2)
+        trialAtomsWithCoordinatesList[randomlyChosenAtomIndex][3] += random.uniform(-0.2, 0.2)
 
         nextStepStructureString: str = (
             str(numAtoms)
