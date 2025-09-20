@@ -1,23 +1,27 @@
 ### This file sets up the main function
-
-from .ui.printer import logo, performing_MCrun, normal_termination
+import random
+from .ui.printer import printLogo, printPerformingMCRun, printNormalTermination
 from .input.reader import InputExtractor
-from .engine.engine import running_mc_loop
+from .engine.engine import runningMCLoop
 
 
 def main():
 
-    logo()
+    printLogo()
     inputdata = InputExtractor()
-    inputdata.extract_restartfile_fhand()
-    inputdata.extract_restartfile_atoms_with_coordinates_list()
-    inputdata.extract_parameter_string()
-    inputdata.n_steps_reader()
-    inputdata.temp_reader()
-    inputdata.vdW_cutoff_reader()
-    performing_MCrun()
-    running_mc_loop(inputdata)
-    normal_termination()
+    inputdata.restartfileReader()
+    inputdata.extractRestartfileAtomsWithCoordinatesList()
+    inputdata.parameterStringReader()
+    inputdata.nStepsReader()
+    inputdata.tempReader()
+    inputdata.vdWCutoffReader()
+    inputdata.randomseedReader()
+    inputdata.outputnameReader()
+    if inputdata.randomseed != None:
+        random.seed(inputdata.randomseed)
+    printPerformingMCRun()
+    runningMCLoop(inputdata)
+    printNormalTermination()
 
 
 if __name__ == "__main__":
