@@ -11,13 +11,14 @@ from ..setup.setup import (
 from ..constants.constants import *
 
 
-def running_mc_loop(InputExtractorObject):
+def running_mc_loop(InputExtractorObject) -> None:
 
     n_steps = InputExtractorObject.n_steps
     parameter_string = InputExtractorObject.parameter_string
     vdW_cutoff = InputExtractorObject.vdW_cutoff
     temp = InputExtractorObject.temp
     atoms_with_coordinates_list = InputExtractorObject.atoms_with_coordinates_list
+    outputname = InputExtractorObject.outputname
     number_of_atoms = len(atoms_with_coordinates_list)
     E_list = energy_calculator_and_list_append(InputExtractorObject)
 
@@ -131,7 +132,7 @@ def running_mc_loop(InputExtractorObject):
                     trial_atoms_with_coordinates_list
                 )
             )
-            trajectoryfile = open("mcsim-traj.xyz", "a")
+            trajectoryfile = open(outputname, "a")
             trajectoryfile.write(structure_string)
             trajectoryfile.close()
             atoms_with_coordinates_list: list = []

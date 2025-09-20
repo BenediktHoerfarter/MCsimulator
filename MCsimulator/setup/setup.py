@@ -2,7 +2,7 @@ def lennard_jones_energy(A_lj, B_lj, distance) -> float:
     return (1 / distance**6) * ((A_lj / distance**6) + B_lj)
 
 
-def energy_calculator_and_list_append(InputExtractorObject):
+def energy_calculator_and_list_append(InputExtractorObject) -> list:
     atoms_with_coordinates_list = InputExtractorObject.atoms_with_coordinates_list
     parameter_string = InputExtractorObject.parameter_string
     vdW_cutoff = InputExtractorObject.vdW_cutoff
@@ -51,7 +51,7 @@ def energy_calculator_and_list_append(InputExtractorObject):
     return E_list
 
 
-def gen_string_of_atoms_with_coordinates_for_xyz(inputlist_atomswithcoordinates):
+def gen_string_of_atoms_with_coordinates_for_xyz(inputlist_atomswithcoordinates) -> str:
     input_list = inputlist_atomswithcoordinates
     number_of_atoms = len(input_list)
     string_of_atoms_with_coordinates_for_xyz: str = ""

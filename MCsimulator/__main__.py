@@ -16,6 +16,7 @@ def main():
     inputdata.temp_reader()
     inputdata.vdW_cutoff_reader()
     inputdata.extract_randomseed()
+    inputdata.extract_outputname()
     if inputdata.randomseed != None:
         random.seed(inputdata.randomseed)
     performing_MCrun()
