@@ -32,6 +32,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## To-Do
 
 - Refactoring functions
-- Append/Overwrite modes and user-defined naming for trajectory file
+- Safety features for user input
 - Naming conventions (e.g., camel case vs. underscores)
 - Building interface with open-source GNN potentials for calculating energy as alternative to LJ potential

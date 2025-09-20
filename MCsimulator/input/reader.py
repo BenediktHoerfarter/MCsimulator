@@ -23,7 +23,7 @@ class InputExtractor:
         self.randomseed: int = None
         self.outputname: str = None
 
-    def extract_restartfile_fhand(self) -> None:
+    def restartfile_fhand_reader(self) -> None:
         restartfile_position: int = self.inputfile_string.find("restart_file =")
         restartfile_position_start: int = self.inputfile_string.find(
             "=", restartfile_position
@@ -50,7 +50,7 @@ class InputExtractor:
             atom[3] = float(atom[3])
         self.atoms_with_coordinates_list = atoms_with_coordinates_list
 
-    def extract_parameter_string(self) -> None:
+    def parameter_string_reader(self) -> None:
         parameterfile_position: int = self.inputfile_string.find("parameter_file =")
         parameterfile_position_start: int = self.inputfile_string.find(
             "=", parameterfile_position
@@ -126,7 +126,7 @@ class InputExtractor:
                 "||| Warning ||| --- No input van der Waals cutoff specified, using default value (no cutoff)."
             )
 
-    def extract_randomseed(self) -> None:
+    def randomseed_reader(self) -> None:
         randomseed_position: int = self.inputfile_string.find("seed")
         if randomseed_position != -1:
             randomseed_position_start: int = self.inputfile_string.find(
@@ -145,7 +145,7 @@ class InputExtractor:
         else:
             return None
 
-    def extract_outputname(self) -> None:
+    def outputname_reader(self) -> None:
         outputname_position: int = self.inputfile_string.find("out")
         if outputname_position != -1:
             outputname_position_start: int = self.inputfile_string.find(

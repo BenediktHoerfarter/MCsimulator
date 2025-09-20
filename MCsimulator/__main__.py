@@ -9,14 +9,14 @@ def main():
 
     logo()
     inputdata = InputExtractor()
-    inputdata.extract_restartfile_fhand()
+    inputdata.restartfile_fhand_reader()
     inputdata.extract_restartfile_atoms_with_coordinates_list()
-    inputdata.extract_parameter_string()
+    inputdata.parameter_string_reader()
     inputdata.n_steps_reader()
     inputdata.temp_reader()
     inputdata.vdW_cutoff_reader()
-    inputdata.extract_randomseed()
-    inputdata.extract_outputname()
+    inputdata.randomseed_reader()
+    inputdata.outputname_reader()
     if inputdata.randomseed != None:
         random.seed(inputdata.randomseed)
     performing_MCrun()
